@@ -15,6 +15,26 @@ Template.settings.helpers({
   },
   editDoc: function(){
     return Settings.findOne();
+  },
+  languageSelectOptions() {
+    // Get available languages (translations)
+    let languages = TAPi18n.getLanguages();
+
+    // Get short name for each language (language key)
+    let languageKeys = _.keys(languages);
+
+    // Create an array of objects for the language select menu
+    let languageSelectOptions = _.map(languageKeys, function (key){
+      // Create a select menu option with label/value structure
+      let languageObject = {
+        label: languages[key].name,
+        value: key
+      }
+
+      return languageObject;
+    });
+
+    return languageSelectOptions;
   }
 });
 
@@ -53,4 +73,3 @@ FlashMessages.configure({
   hideDelay: 5000,
   autoScroll: false
 });
-

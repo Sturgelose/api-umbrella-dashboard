@@ -3,8 +3,8 @@
   <legend>Select Documentation file</legend>
   <select name="selected-documentation" class="form-control">
     <option value="">Select</option>
-    {{# each document in apiDocumentation }}
-      <option value="/api/{{ document._id }}/swagger.json">{{ document.getApiBackendName }}</option>
+    {{# each apiDocumentation in apiDocumentations }}
+      <option value="/api/{{ apiDocumentation._id }}/swagger.json">{{ apiDocumentation.getApiBackendName }}</option>
     {{/ each }}
   </select>
   {{/ if }}

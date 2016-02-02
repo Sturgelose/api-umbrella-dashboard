@@ -147,6 +147,9 @@ Schemas.SettingsSchema = new SimpleSchema({
     autoform: {
       placeholder: 'xxx'
     }
+  },
+  "defaultLanguage": {
+    type: String
   }
 });
 

@@ -132,8 +132,9 @@ Template.chartsLayout.created = function () {
       .renderVerticalGridLines(true)
       .elasticY(true);
 
+
     // Creates Dynatable
-    var dynatable = $('#dc-data-table').dynatable({
+    instance.dynatable = $('#dc-data-table').dynatable({
       features: {
         pushState: false
       },
@@ -147,8 +148,8 @@ Template.chartsLayout.created = function () {
     // Listens to filtering event and refreshes the table on a change
     function refreshTable() {
       dc.events.trigger(function () {
-        dynatable.settings.dataset.originalRecords = setUpDataTable();
-        dynatable.process();
+        instance.dynatable.settings.dataset.originalRecords = setUpDataTable();
+        instance.dynatable.process();
       });
     }
 

@@ -3,10 +3,10 @@ Template.chartsLayout.created = function () {
   // assigning current template instance to a variable
   var instance = this;
 
-  instance.dataToExport = new ReactiveVar("No data");
+  instance.dataToExport = new ReactiveVar();
 
   // default value for reactive variable with "String" type
-  instance.mapData = new ReactiveVar("No data");
+  instance.mapData = new ReactiveVar();
 
   // defines the intensity for the heatmap with default value of 100
   instance.heatIntensity= new ReactiveVar(100);

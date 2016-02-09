@@ -35,7 +35,7 @@ Template.chartsLayout.created = function () {
         var parsedChartData = instance.parseChartData(dashboardData);
 
         // parse data for map
-        var parsedMapData   = instance.parseMapData(dashboardData);
+        var parsedMapData   = instance.getMapHeatPoints(dashboardData);
 
         // set reactive variable with parsed map data
         instance.mapData.set(parsedMapData);
@@ -57,7 +57,7 @@ Template.chartsLayout.created = function () {
     var index = new crossfilter(items);
 
     // Create ISO date format
-    var dateFormat = d3.time.format.iso;
+    var dateFormat = d3.time.format("%Y-%m-%d-%H"); //TODO change to ISO later
 
     // Parse each item adding timestamp as YMD and count the items
     items.forEach(function (d) {
@@ -65,7 +65,7 @@ Template.chartsLayout.created = function () {
       var timeStamp = moment(d.fields.request_at[0]);
 
       // Format the timestamp using Moment.js format method
-      timeStamp = timeStamp.format();
+      timeStamp = timeStamp.format("YYYY-MM-DD-HH"); //TODO change to ISO later
 
       // Add YMD field to item
       d.fields.ymd = dateFormat.parse(timeStamp);
@@ -184,7 +184,7 @@ Template.chartsLayout.created = function () {
       var currentDataSet = timeStampDimension.top(Infinity);
 
       // runs current data set through parser, selecting just needed fields for heat points
-      var parsedDataSet = instance.parseMapData(currentDataSet);
+      var parsedDataSet = instance.getMapHeatPoints(currentDataSet);
 
       // sets new parsed data to a reactive variable
       instance.mapData.set(parsedDataSet);
@@ -277,7 +277,7 @@ Template.chartsLayout.created = function () {
   };
 
   // function that parses map
-  instance.parseMapData = function (mapData) {
+  instance.getMapHeatPoints = function (mapData) {
 
     // defines the intensity for the heatmap
     var intensity = instance.heatIntensity.get();

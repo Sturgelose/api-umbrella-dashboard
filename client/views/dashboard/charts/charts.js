@@ -1,69 +1,3 @@
-Template.chartsLayout.rendered = function () {
-
-  // assigning current template instance to a variable
-  var instance = this;
-
-  // appending loading state
-  $('#loadingState').html("Loading...");
-
-  // gets current month and year -> providing them for initial query
-  var currentYearAndMonth = moment().format("YYYY-MM");
-
-  // sets default items amount to be returned
-  var initialLimit = 10000;
-
-  // sets query for elastic search
-  var input = {
-    index : "api-umbrella-logs-v1-"+currentYearAndMonth,
-    type  : "log",
-    limit : initialLimit,
-    fields: [
-      'request_at',
-      'request_ip_country',
-      'request_ip',
-      'response_time',
-      'request_path',
-      'request_ip_location.lon',
-      'request_ip_location.lat'
-    ]
-  };
-
-  // get data
-  instance.getDashboardData(input);
-
-  // render map
-  instance.renderMap();
-
-  // set an autorun function
-  instance.autorun(function () {
-
-    // dashboard data from reactive variable
-    var mapData = instance.mapData.get();
-
-    // checks if data has type of object, by default it is string
-    if (typeof mapData === 'object') {
-
-      // checks if map already has layer with heat points
-      if (instance.map.hasLayer(instance.heatLayer)) {
-
-        // removes heat layer in one is set
-        instance.map.removeLayer(instance.heatLayer);
-
-      }
-
-      // creates new heat layer
-      instance.heatLayer = L.heatLayer(mapData);
-
-      // adds heat to a map
-      instance.heatLayer.addTo(instance.map);
-
-    }
-
-  });
-
-
-};
-
 Template.chartsLayout.created = function () {
 
   // assigning current template instance to a variable
@@ -371,6 +305,72 @@ Template.chartsLayout.created = function () {
     // returns heat data
     return addressPoints;
   };
+
+};
+
+Template.chartsLayout.rendered = function () {
+
+  // assigning current template instance to a variable
+  var instance = this;
+
+  // appending loading state
+  $('#loadingState').html("Loading...");
+
+  // gets current month and year -> providing them for initial query
+  var currentYearAndMonth = moment().format("YYYY-MM");
+
+  // sets default items amount to be returned
+  var initialLimit = 10000;
+
+  // sets query for elastic search
+  var input = {
+    index : "api-umbrella-logs-v1-"+currentYearAndMonth,
+    type  : "log",
+    limit : initialLimit,
+    fields: [
+      'request_at',
+      'request_ip_country',
+      'request_ip',
+      'response_time',
+      'request_path',
+      'request_ip_location.lon',
+      'request_ip_location.lat'
+    ]
+  };
+
+  // get data
+  instance.getDashboardData(input);
+
+  // render map
+  instance.renderMap();
+
+  // set an autorun function
+  instance.autorun(function () {
+
+    // dashboard data from reactive variable
+    var mapData = instance.mapData.get();
+
+    // checks if data has type of object, by default it is string
+    if (typeof mapData === 'object') {
+
+      // checks if map already has layer with heat points
+      if (instance.map.hasLayer(instance.heatLayer)) {
+
+        // removes heat layer in one is set
+        instance.map.removeLayer(instance.heatLayer);
+
+      }
+
+      // creates new heat layer
+      instance.heatLayer = L.heatLayer(mapData);
+
+      // adds heat to a map
+      instance.heatLayer.addTo(instance.map);
+
+    }
+
+  });
+
 
 };
 

@@ -145,8 +145,7 @@ Template.chartsLayout.created = function () {
       }
     }).data('dynatable');
 
-    // Listens to filtering event and refreshes the table on a change
-    instance.refreshTable = function () {
+    instance.updateTableRecords = function () {
       dc.events.trigger(function () {
         instance.dynatable.settings.dataset.originalRecords = setUpDataTable();
         instance.dynatable.process();
@@ -304,6 +303,12 @@ Template.chartsLayout.created = function () {
     return addressPoints;
   };
 
+  // Listens to filtering event and refreshes the table on a change
+  instance.refreshTable = function () {
+
+    instance.updateTableRecords();
+
+  };
 };
 
 Template.chartsLayout.rendered = function () {

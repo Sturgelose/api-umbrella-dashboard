@@ -156,40 +156,11 @@ Template.chartsLayout.created = function () {
     // Add each chart to the DC Chart Registry
     for (var i = 0; i < dc.chartRegistry.list().length; i++) {
       var chartI = dc.chartRegistry.list()[i];
-      chartI.on("filtered", refreshMapAndTable);
-    }
-
-    // function that refreshes both map and data table
-    function refreshMapAndTable () {
-      instance.refreshTable();
-      refreshMap();
-      refreshMoveChart();
-    }
-
-    function refreshMoveChart () {
-
-      // gets selected time range
-      var timeRange = overviewChart.filter();
-
-      // generating time scale for dc
-      var timeScale = d3.time.scale().domain(timeRange);
-
-      // attaching current time range to chart
-      moveChart.x(timeScale);
-    }
-
-    // parse data into array for map
-    function refreshMap () {
-
-      // current data set which is being passed through crossfilter
-      var currentDataSet = timeStampDimension.top(Infinity);
-
-      // runs current data set through parser, selecting just needed fields for heat points
-      var parsedDataSet = instance.getMapHeatPoints(currentDataSet);
-
-      // sets new parsed data to a reactive variable
-      instance.mapData.set(parsedDataSet);
-
+      chartI.on("filtered", function () {
+        instance.refreshTable();
+        instance.refreshMap();
+        instance.refreshMoveChart();
+      });
     }
 
     // Parse data into array for data table
@@ -245,6 +216,32 @@ Template.chartsLayout.created = function () {
 
       return dataSet;
     }
+
+    instance.refreshMoveChart = function () {
+
+      // gets selected time range
+      var timeRange = overviewChart.filter();
+
+      // generating time scale for dc
+      var timeScale = d3.time.scale().domain(timeRange);
+
+      // attaching current time range to chart
+      moveChart.x(timeScale);
+    }
+
+    // parse data into array for map
+    instance.refreshMap = function () {
+
+      // current data set which is being passed through crossfilter
+      var currentDataSet = timeStampDimension.top(Infinity);
+
+      // runs current data set through parser, selecting just needed fields for heat points
+      var parsedDataSet = instance.getMapHeatPoints(currentDataSet);
+
+      // sets new parsed data to a reactive variable
+      instance.mapData.set(parsedDataSet);
+
+    };
 
     instance.dataToExport.set(setUpDataTable());
 
